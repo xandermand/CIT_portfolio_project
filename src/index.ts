@@ -1,19 +1,7 @@
-import pg from 'pg'
 import express from 'express'
-const {Pool, Client} = pg
+import { listMovies } from './Model/movies.js';
 const app = express()
 
-
-
-
-const client = new Client({
-    host: process.env.DB_HOST,
-    port: Number(process.env.DB_PORT),
-    database: process.env.DB_NAME,
-    user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-    ssl: {rejectUnauthorized: false},
-})
 
 app.use(express.json());
 
@@ -23,6 +11,11 @@ app.get('/api/test', (req,res)=> {
     });
 });
 
-app.listen(Number(process.env.port ?? 3000), '0.0.0.0', ()=>{
-    console.log('API running on port ${port}');
+app.get('/movies', async (req,res)=>{
+    res.json(await listMovies(200, 0));
+});
+
+
+app.listen(Number(process.env.PGPORT ?? 3000), '0.0.0.0', ()=>{
+    console.log(`API running on port ${3000}`);
 });
