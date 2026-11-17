@@ -6,4 +6,13 @@ export const pool = new Pool({
     host: process.env.PGHOST,
     database: process.env.PGDATABASE,
     port: Number(process.env.PGPORT),
+    ssl: {rejectUnauthorized: false},
+});
+
+pool.on('connect', () => {
+    console.log('Connected to PostgreSQL');
+});
+
+pool.on('error', (err) => {
+    console.error('Unexpected PostgreSQL error:', err);
 });
