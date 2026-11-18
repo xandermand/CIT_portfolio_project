@@ -5,8 +5,12 @@ import { pool } from './db.js';
 import { findPerson, listPeople } from './Model/people.js';
 import { errorHandler } from './Middleware/Errorhandler.js';
 import { CreateError } from './Middleware/Errorhandler.js';
+import cors from 'cors';
 const app = express()
 
+//5173 is example i dont know what the host for frontend is yet.
+// We can change it later if its wrong when we have a front end
+app.use(cors({origin: 'http://localhost:5173' }));
 
 
 app.use(express.json());
