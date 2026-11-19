@@ -15,13 +15,6 @@ const app = express()
 // We can change it later if its wrong when we have a front end
 app.use(cors({origin: 'http://localhost:5173' }));
 
-//5173 is example i dont know what the host for frontend is yet.
-// We can change it later if its wrong when we have a front end
-app.use(cors({origin: 'http://localhost:5173' }));
-
-
-app.use(cors({origin: 'http://localhost:5173'}));
-
 app.use(express.json());
 
 app.get('/api/test', (req,res)=> {
@@ -77,36 +70,9 @@ app.get('/users/:user_id', async (req,res,next)=>{
     res.json(user);
 })
 
-app.use(errorHandler);
-
-
-app.get('/users', async (req,res)=>{
-    res.json(await listUsers(200,0));
-});
-
-app.post('/users/register', async (req,res, next)=>{
-    try{const input = validateNewUser(req.body);
-    if (input === undefined){
-        return next(CreateError('Email, Password or Username is not allowed', 400));
-    }
-    const created = await createUser(input);
-    res.status(201).location(`/users/${created}`).json(created);
-} catch (err){
-    next(err);
-}})
-
-app.get('/users/:user_id', async (req,res,next)=>{
-    const user = await findUser(req.params.user_id);
-    if (user===undefined){
-        return next(CreateError('User not found', 404));
-    }
-    res.json(user);
-})
 
 app.use(errorHandler);
 
-
-app.use(errorHandler);
 
 app.listen(Number(process.env.port ?? 3000), '0.0.0.0', ()=>{
     console.log(`API running on port ${3000}`);
