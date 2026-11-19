@@ -4,7 +4,7 @@ import { findMovie, listMovies } from './Model/movies.js';
 import { pool } from './db.js';
 import { findPerson, listPeople } from './Model/people.js';
 
-import { createUser, createUserMovieBookmark, findUser, findUserBookmarks, listUsers } from './Model/users.js';
+import { createUser, createUserMovieBookmark, deleteUserMovieBookmark, findUser, findUserBookmarks, listUsers } from './Model/users.js';
 import { validateNewUser } from './validator.js';
 import {errorHandler} from './Middleware/Errorhandler.js';
 import {CreateError} from './Middleware/Errorhandler.js';
@@ -91,7 +91,11 @@ app.get('/users/:user_id/bookmarks', async (req,res,next)=>{
 })
 
 app.delete('/users/:user_id/bookmarks/:tconst', async (req,res,next)=>{
-    
+    try{
+        res.status(204).json(deleteUserMovieBookmark(req.params.user_id,req.params.tconst));
+    } catch (err){
+        next(err);
+    }
 })
 
 app.use(errorHandler);
