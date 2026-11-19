@@ -48,3 +48,4 @@ app.use(errorHandler);
 app.listen(Number(process.env.port ?? 3000), '0.0.0.0', ()=>{
     console.log(`API running on port ${3000}`);
 });
+
