@@ -34,7 +34,6 @@ app.get('/movies', async (req,res)=>{
     res.json(await listMovies(200, 0));
 });
 
-app.get('/movies/:tconst', async (req,res,next)=>{
 app.get('/movies/:tconst', async (req,res, next)=>{
     const movie = await findMovie(req.params.tconst);
     if (movie === undefined){
