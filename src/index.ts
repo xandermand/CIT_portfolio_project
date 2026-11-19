@@ -4,7 +4,7 @@ import { findMovie, listMovies } from './Model/movies.js';
 import { pool } from './db.js';
 import { findPerson, listPeople } from './Model/people.js';
 
-import { createUser, findUser, listUsers } from './Model/users.js';
+import { createUser, createUserMovieBookmark, findUser, findUserBookmarks, listUsers } from './Model/users.js';
 import { validateNewUser } from './validator.js';
 import {errorHandler} from './Middleware/Errorhandler.js';
 import {CreateError} from './Middleware/Errorhandler.js';
@@ -70,6 +70,29 @@ app.get('/users/:user_id', async (req,res,next)=>{
     res.json(user);
 })
 
+app.post('/users/:user_id/bookmark', async (req,res,next)=>{
+    try{const bookmark = await createUserMovieBookmark(req.params.user_id,req.body.tconst);
+    if (typeof(bookmark)!=="string"){
+        return next(CreateError('User or Movie not allowed', 400));
+    }
+    res.status(201).location(`/users/${req.params.user_id}/bookmarks/${bookmark}`).json(bookmark);
+    } catch (err){
+        next(err);
+    }
+})
+
+app.get('/users/:user_id/bookmarks', async (req,res,next)=>{
+    const user = await findUser(req.params.user_id);
+    if (user===undefined){
+        return next(CreateError('User not found', 404));
+    }
+    const user_bookmark = await findUserBookmarks(req.params.user_id);
+    res.json(user_bookmark);
+})
+
+app.delete('/users/:user_id/bookmarks/:tconst', async (req,res,next)=>{
+    
+})
 
 app.use(errorHandler);
 
