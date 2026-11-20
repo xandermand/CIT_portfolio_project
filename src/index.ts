@@ -3,10 +3,7 @@ import express from 'express'
 import { findMovie, listMovies } from './Model/movies.js';
 import { pool } from './db.js';
 import { findPerson, listPeople } from './Model/people.js';
-<<<<<<< Updated upstream
-import { errorHandler } from './Middleware/Errorhandler.js';
-import { CreateError } from './Middleware/Errorhandler.js';
-=======
+
 import jwt from 'jsonwebtoken';
 import { verify } from './Controller/passwordmanager.js';
 import { createUser, createUserMovieBookmark, createUserPersonBookmark, createUserReview, createUserSearch, deleteUserMovieBookmark, deleteUserPersonBookmark, deleteUserReview, findUser, findUserBookmarks, findUserPersonBookmarks, findUserReviews, listUsers, listUserSearches, updateUserReview, findUserPassword } from './Model/users.js';
@@ -14,9 +11,7 @@ import { validateNewUser } from './validator.js';
 import {errorHandler} from './Middleware/Errorhandler.js';
 import {CreateError} from './Middleware/Errorhandler.js';
 import {authenticator} from './Middleware/Authenticator.js';
->>>>>>> Stashed changes
 import cors from 'cors';
-import { findUserPassword } from './Model/users.js';
 const app = express()
 
 //5173 is example i dont know what the host for frontend is yet.
@@ -54,8 +49,7 @@ app.get('/people/:nconst', async (req,res,next)=>{
     res.json(person);
 });
 
-<<<<<<< Updated upstream
-=======
+
 app.get('/users', async (req,res)=>{
     res.json(await listUsers(200,0));
 });
@@ -114,7 +108,6 @@ app.get('/users/:user_id', async (req,res,next)=>{
 
 
 
->>>>>>> Stashed changes
 app.post('/users/:user_id/bookmark/movie', async (req,res,next)=>{
     try{const bookmark = await createUserMovieBookmark(req.params.user_id,req.body.tconst);
     if (typeof(bookmark)!=="string"){
