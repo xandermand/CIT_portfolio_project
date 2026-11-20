@@ -6,6 +6,10 @@ export interface User{
     user_id: string, username: string, email: string, password: string
 }
 
+interface logUser{
+        user_id: string, username: string, email: string, password: string,salt: string
+}
+
 export async function listUsers(
     limit:number, offset:number): Promise<User[]>{
         const {rows} = await pool.query<User>(
@@ -40,6 +44,16 @@ export async function createUser(u:User): Promise<string|undefined>{
         await client.query('ROLLBACK'); throw err;
     } finally {client.release()}
 }
+
+export async function findUserPassword(email: string): Promise<logUser | undefined> {
+    const { rows } = await pool.query<logUser>(
+        `SELECT user_id, username, email, password, salt FROM users_basics WHERE email = $1`, [email]
+    );
+
+    return rows[0];
+}
+
+
 
 export async function createUserMovieBookmark(user_id:string,tconst:string): Promise<string|undefined>{
     const client = await pool.connect();

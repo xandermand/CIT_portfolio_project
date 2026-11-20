@@ -9,3 +9,8 @@ export function generateSalt(): string{
     return crypto.randomBytes(8).toString("hex");
 }
 
+export async function verify(salt:string,password:string,storedhash:string):   
+        Promise<boolean>{
+        const hash = await hashPassword(salt,password);
+        return hash === storedhash;
+    }
