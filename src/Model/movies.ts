@@ -6,6 +6,10 @@ export interface Movie {
     poster: string;
 }
 
+export interface MovieDbo {
+    tconst: string, title: string
+}
+
 export async function findMovie(
     tconst:string): Promise<Movie|undefined>{
         const {rows} = await pool.query<Movie>(
