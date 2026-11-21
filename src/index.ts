@@ -108,12 +108,12 @@ app.get('/users/:user_id', async (req,res,next)=>{
 
 
 
-app.post('/users/:user_id/bookmark/movie', async (req,res,next)=>{
-    try{const bookmark = await createUserMovieBookmark(req.params.user_id,req.body.tconst);
+app.post('/users/me/bookmark/movie', authenticator, async (req,res,next)=>{
+    try{const bookmark = await createUserMovieBookmark(res.locals.user_id,req.body.tconst);
     if (typeof(bookmark)!=="string"){
         return next(CreateError('User or Movie not allowed', 400));
     }
-    res.status(201).location(`/users/${req.params.user_id}/bookmarks/movies/${bookmark}`).json(bookmark);
+    res.status(201).location(`/users/${res.locals.user_id}/bookmarks/movies/${bookmark}`).json(bookmark);
     } catch (err){
         next(err);
     }
@@ -128,20 +128,21 @@ app.get('/users/:user_id/bookmarks/movies', async (req,res,next)=>{
     res.json(user_bookmark);
 })
 
-app.delete('/users/:user_id/bookmarks/movies/:tconst', async (req,res,next)=>{
+//Needs authenticator
+app.delete('/users/me/bookmarks/movies/:tconst', authenticator, async (req,res,next)=>{
     try{
-        res.status(204).json(deleteUserMovieBookmark(req.params.user_id,req.params.tconst));
+        res.status(204).json(deleteUserMovieBookmark(res.locals.user_id,req.params.tconst));
     } catch (err){
         next(err);
     }
 })
 
-app.post('/users/:user_id/bookmark/person', async (req,res,next)=>{
-    try{const bookmark = await createUserPersonBookmark(req.params.user_id,req.body.nconst);
+app.post('/users/me/bookmark/person', authenticator, async (req,res,next)=>{
+    try{const bookmark = await createUserPersonBookmark(res.locals.user_id,req.body.nconst);
         if (typeof(bookmark)!=="string"){
             return next(CreateError('User or Person not allowed', 400));
         }
-        res.status(201).location(`/users/${req.params.user_id}/bookmarks/people/${bookmark}`).json(bookmark);
+        res.status(201).location(`/users/${res.locals.user_id}/bookmarks/people/${bookmark}`).json(bookmark);
     } catch (err){
         next(err)
     }
@@ -156,6 +157,7 @@ app.get('/users/:user_id/bookmarks/people', async (req,res,next)=>{
     res.json(user_bookmark);
 })
 
+//Needs authenticator
 app.delete('/users/:user_id/bookmarks/people/:nconst', async (req,res,next)=>{
     try{
         res.status(204).json(deleteUserPersonBookmark(req.params.user_id,req.params.nconst));
@@ -164,6 +166,7 @@ app.delete('/users/:user_id/bookmarks/people/:nconst', async (req,res,next)=>{
     }
 })
 
+//Needs authenticator
 app.post('/users/:user_id/rating', async (req,res,next)=>{
     try{const rating = await createUserReview(req.params.user_id,req.body.tconst,req.body.score)
         if (rating===undefined){
@@ -184,6 +187,7 @@ app.get('/users/:user_id/ratings', async (req,res,next)=>{
     res.json(user_review);
 })
 
+//Needs authenticator
 app.delete('/users/:user_id/ratings/:tconst', async (req,res,next)=>{
     try{
         res.status(204).json(deleteUserReview(req.params.user_id,req.params.tconst));
@@ -192,6 +196,7 @@ app.delete('/users/:user_id/ratings/:tconst', async (req,res,next)=>{
     }
 })
 
+//Needs authenticator
 app.patch('/users/:user_id/ratings/:tconst', async (req,res,next)=>{
     try{
         res.status(200).json(updateUserReview(req.params.user_id,req.params.tconst,req.body.score));
@@ -200,6 +205,7 @@ app.patch('/users/:user_id/ratings/:tconst', async (req,res,next)=>{
     }
 })
 
+//Needs authenticator
 app.post('/users/:user_id/search', async (req,res,next)=>{
     try{    const user = await findUser(req.params.user_id);
     if (user===undefined){
