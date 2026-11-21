@@ -128,10 +128,9 @@ app.get('/users/:user_id/bookmarks/movies', async (req,res,next)=>{
     res.json(user_bookmark);
 })
 
-//Needs authenticator
-app.delete('/users/me/bookmarks/movies/:tconst', authenticator, async (req,res,next)=>{
+app.delete('/users/me/bookmarks/movies/:tconst',authenticator, async (req,res,next)=>{
     try{
-        res.status(204).json(deleteUserMovieBookmark(res.locals.user_id,req.params.tconst));
+        res.status(204).json(deleteUserMovieBookmark(res.locals.user_id,req.params.tconst.toString()));
     } catch (err){
         next(err);
     }
@@ -157,18 +156,16 @@ app.get('/users/:user_id/bookmarks/people', async (req,res,next)=>{
     res.json(user_bookmark);
 })
 
-//Needs authenticator
-app.delete('/users/:user_id/bookmarks/people/:nconst', async (req,res,next)=>{
+app.delete('/users/:user_id/bookmarks/people/:nconst',authenticator, async (req,res,next)=>{
     try{
-        res.status(204).json(deleteUserPersonBookmark(req.params.user_id,req.params.nconst));
+        res.status(204).json(deleteUserPersonBookmark(req.params.user_id.toString(),req.params.nconst.toString()));
     } catch (err){
         next(err);
     }
 })
 
-//Needs authenticator
-app.post('/users/:user_id/rating', async (req,res,next)=>{
-    try{const rating = await createUserReview(req.params.user_id,req.body.tconst,req.body.score)
+app.post('/users/:user_id/rating',authenticator, async (req,res,next)=>{
+    try{const rating = await createUserReview(req.params.user_id.toString(),req.body.tconst,req.body.score)
         if (rating===undefined){
             return next(CreateError('Score not allowed', 400))
         }
@@ -187,31 +184,28 @@ app.get('/users/:user_id/ratings', async (req,res,next)=>{
     res.json(user_review);
 })
 
-//Needs authenticator
-app.delete('/users/:user_id/ratings/:tconst', async (req,res,next)=>{
+app.delete('/users/:user_id/ratings/:tconst', authenticator,async (req,res,next)=>{
     try{
-        res.status(204).json(deleteUserReview(req.params.user_id,req.params.tconst));
+        res.status(204).json(deleteUserReview(req.params.user_id.toString(),req.params.tconst.toString()));
     } catch (err){
         next(err);
     }
 })
 
-//Needs authenticator
-app.patch('/users/:user_id/ratings/:tconst', async (req,res,next)=>{
+app.patch('/users/:user_id/ratings/:tconst',authenticator, async (req,res,next)=>{
     try{
-        res.status(200).json(updateUserReview(req.params.user_id,req.params.tconst,req.body.score));
+        res.status(200).json(updateUserReview(req.params.user_id.toString(),req.params.tconst.toString(),req.body.score));
     } catch (err){
         next(err);
     }
 })
 
-//Needs authenticator
-app.post('/users/:user_id/search', async (req,res,next)=>{
-    try{    const user = await findUser(req.params.user_id);
+app.post('/users/:user_id/search',authenticator, async (req,res,next)=>{
+    try{    const user = await findUser(req.params.user_id.toString());
     if (user===undefined){
         return next(CreateError('User not found', 404));
     }
-    res.status(201).location(`/users/${req.params.user_id}/searches`).json(createUserSearch(req.params.user_id,req.body.search));
+    res.status(201).location(`/users/${req.params.user_id}/searches`).json(createUserSearch(req.params.user_id.toString(),req.body.search));
     } catch (err){
         next(err);
     }
