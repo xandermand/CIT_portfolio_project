@@ -1,5 +1,4 @@
-import { Client } from "pg";
-import { generateSalt, hashPassword} from "../Controller/passwordmanager.js";
+import { generateSalt, hashPassword} from "../services/passwordmanager.js";
 import { pool } from "../db.js";
 import { Movie, MovieDbo } from "./movies.js";
 

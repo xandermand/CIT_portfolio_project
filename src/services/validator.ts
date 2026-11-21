@@ -1,4 +1,4 @@
-import { User } from "./Model/users.js";
+import { User } from "../data/users.js";
 
 function passwordIsWeak(value: unknown): value is string{
     return typeof value !== "string" || value.length < 8;
