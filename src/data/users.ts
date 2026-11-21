@@ -11,7 +11,7 @@ export interface Review{
 }
 
 export interface Search{
-    user_id: string, search: string
+    user_id: string, search: string, search_id:string
 }
 
 interface logUser{
@@ -215,7 +215,7 @@ export async function createUserSearch(user_id:string,search:string): Promise<Mo
 
 export async function listUserSearches(user_id:string): Promise<Search[]>{
     const {rows} = await pool.query(`
-        SELECT user_id, search_text
+        SELECT user_id, search_text, search_id
         FROM search_history
         WHERE user_id = $1`,[user_id]);
         return rows;
