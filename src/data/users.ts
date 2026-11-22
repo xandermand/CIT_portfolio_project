@@ -202,7 +202,7 @@ export async function createUserSearch(user_id:string,search:string): Promise<Mo
         await client.query('BEGIN');
         const {rows} = await client.query(
             `SELECT id, title
-            FROM weighted_search($1)`,[search.split(" ")]);
+            FROM weighted_search($1)`,[search]);
         await client.query(`
             INSERT INTO search_history ("user_id","search_text")
             VALUES ($1,$2)`,[user_id,search]);

@@ -192,7 +192,7 @@ usersRouter.post('/me/search',authenticator, async (req,res,next)=>{
     if (user===undefined){
         return next(CreateError('User not found', 404));
     }
-    res.status(201).location(`/users/${res.locals.user_id}/searches`).json(users.createUserSearch(req.params.user_id.toString(),req.body.search));
+    res.status(201).location(`/users/${res.locals.user_id}/searches`).json(users.createUserSearch(res.locals.user_id.toString(),req.body.search));
     } catch (err){
         next(err);
     }

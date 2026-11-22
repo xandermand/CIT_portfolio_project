@@ -1,28 +1,9 @@
-import { Pool } from "pg";
-import 'dotenv/config';
+import { generateSalt, hashPassword } from "./services/passwordmanager.js";
 
-const pool = new Pool({
-    host: process.env.DB_HOST,
-    port: Number(process.env.DB_PORT),
-    database: process.env.DB_NAME,
-    user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-    ssl: {rejectUnauthorized: false},
-});
+const salt = generateSalt();
+const password = "11111111";
 
-async function testConnection() {
-    try {
-        const result = await pool.query(
-            "SELECT NOW() AS server_time"
-        );
+const hash = hashPassword(salt,password);
 
-        console.log("Database conncection sucessfull!");
-        console.log(result.rows[0]);
-    } catch (error) {
-        console.error("Database connection failed: ", error);
-    } finally {
-        await pool.end();
-    }
-};
+console.log(hash);
 
-testConnection();
